@@ -5,8 +5,8 @@ const FooterComponent = () => {
   const currentYear: number = new Date().getFullYear();
 
   return (
-    <footer className="footer fixed-bottom">
-      <div className="row">
+    <footer className="footer fixed-bottom text-bg-dark">
+      <div className="row py-2">
         <div className="col-md-12">
           <p className="text-center">Copyrigth &copy; { currentYear } - <a href="https://www.alexanderdaza.com" target="_blank">Alexander Daza</a> - All rights reserved
             <br />
