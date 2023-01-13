@@ -1,32 +1,30 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import FooterComponent from './components/base/footer.component';
+import { HeaderComponent } from './components/base/header.component';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <HeaderComponent></HeaderComponent>
+      <div className='row'>
+        <div className='col-6'>
+          <h1>Column 1</h1>
+        </div>
+        <div className='col-6'>
+          <h1>Column 2</h1>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+      <main className="px-3">
+        <h1>Cover your page.</h1>
+        <p className="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+        <p className="lead">
+          <a href="#" className="btn btn-lg btn-light fw-bold border-white bg-white">Learn more</a>
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      </main>
+      
+      <FooterComponent></FooterComponent>
     </div>
   )
 }
