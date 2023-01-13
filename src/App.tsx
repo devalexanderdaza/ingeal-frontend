@@ -4,10 +4,32 @@ import FooterComponent from './components/base/footer.component';
 import { HeaderComponent } from './components/base/header.component';
 import { makeRequest } from './helpers/index';
 
+export interface ICharacterFilters {
+  name?: string;
+  status?: ECharacterStatus;
+  species?: string;
+  type?: string;
+  gender?: ECharacterGender;
+}
+
+export enum ECharacterStatus {
+  Alive = 'alive',
+  Dead = 'dead',
+  Unknown = 'unknown',
+}
+
+export enum ECharacterGender {
+  Male = 'male',
+  Female = 'female',
+  Genderless = 'genderless',
+  Unknown = 'unknown',
+}
+
 function App() {
 
   const [rickAndMortyCharacters, setRickAndMortyCharacters] = useState<any>([])
   const [rickAndMortyCharacter, setRickAndMortyCharacter] = useState<any>([])
+  const [rickAndMortyFilters, setRickAndMortyFilters] = useState<ICharacterFilters>({});
 
   useEffect(() => {
     makeRequest('rick-and-morty-characters', {
@@ -26,9 +48,58 @@ function App() {
     });
   }
 
+  // Generate update filters functions
+  const updateFilterName = (event: any) => {
+    setRickAndMortyFilters({ ...rickAndMortyFilters, name: event.target.value });
+  }
+  const updateFilterType = (event: any) => {
+    setRickAndMortyFilters({ ...rickAndMortyFilters, type: event.target.value });
+  }
+  const updateFilterGender = (event: any) => {
+    setRickAndMortyFilters({ ...rickAndMortyFilters, gender: event.target.value });
+  }
+  const updateFilterStatus = (event: any) => {
+    setRickAndMortyFilters({ ...rickAndMortyFilters, status: event.target.value });
+  }
+
+  const filterRickAndMortyCharacters = () => {
+    const parameters = Object.entries(rickAndMortyFilters).map(e => e.join('=')).join('&');
+    const url = `rick-and-morty-characters-filtered?${parameters}`;
+    console.log(url);
+    makeRequest(url, {
+      method: 'GET'
+    }).then((response: any) => {
+      setRickAndMortyCharacters(response.results)
+    });
+  }
+
   return (
     <div className="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
       <HeaderComponent></HeaderComponent>
+      <div className="row py-5">
+        <div className="col-12">
+          <div className="input-group mb-3">
+            <input type="text" onChangeCapture={updateFilterName} className="form-control" placeholder="Search by name" aria-label="Search by name" aria-describedby="button-addon2" />
+          </div>
+          <div className="input-group mb-3">
+            <input type="text" onChangeCapture={updateFilterType} className="form-control" placeholder="Search by type" aria-label="Search by type" aria-describedby="button-addon2" />
+          </div>
+          <div className="input-group mb-3">
+            <input type="text" onChangeCapture={updateFilterGender} className="form-control" placeholder="Search by gender" aria-label="Search by gender" aria-describedby="button-addon2" />
+          </div>
+          <div className="input-group mb-3">
+            <input type="text" onChangeCapture={updateFilterStatus} className="form-control" placeholder="Search by status" aria-label="Search by status" aria-describedby="button-addon2" />
+          </div>
+          <button className="btn btn-outline-secondary" onClick={filterRickAndMortyCharacters} type="button" id="button-addon2">Search</button>
+        </div>
+      </div>
+      {/* List of characters */}
+      <div className="row">
+        <div className="col-12">
+          <h1 className="text-center">Rick and Morty Characters</h1>
+        </div>
+      </div>
+
       <div className="row row-cols-1 row-cols-md-3 g-4 py-5">
         {rickAndMortyCharacters.map((character: any) => {
           return <div className="col" key={character.id} style={{color: 'gray'}}>
